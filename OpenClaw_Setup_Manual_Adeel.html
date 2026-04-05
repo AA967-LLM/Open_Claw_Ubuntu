@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw Deployment Manual | Adeel's Hybrid Setup</title>
+    <title>OpenClaw MASTER Deployment Manual | Adeel's Hybrid Setup</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -15,6 +15,7 @@
             --highlight: #ffa657;
             --code-bg: #010409;
             --success: #3fb950;
+            --warning: #d29922;
         }
 
         body {
@@ -32,28 +33,30 @@
         header {
             width: 100%;
             background: linear-gradient(135deg, #1f2937, #111827);
-            padding: 3rem 1rem;
+            padding: 4rem 1rem;
             text-align: center;
-            border-bottom: 2px solid var(--accent);
+            border-bottom: 3px solid var(--accent);
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
         header h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 800;
             margin: 0;
-            letter-spacing: -1px;
+            letter-spacing: -2px;
             color: var(--accent);
+            text-transform: uppercase;
         }
 
         header p {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: var(--highlight);
             margin-top: 0.5rem;
+            font-weight: 300;
         }
 
         main {
-            max-width: 900px;
+            max-width: 1000px;
             width: 95%;
             margin: 2rem 0;
         }
@@ -62,254 +65,283 @@
             background-color: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
         }
 
         h2 {
-            border-left: 4px solid var(--accent);
-            padding-left: 1rem;
+            border-left: 5px solid var(--accent);
+            padding-left: 1.5rem;
             margin-top: 0;
             color: var(--highlight);
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .specs-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
 
         .spec-item {
             background: var(--code-bg);
-            padding: 1rem;
-            border-radius: 8px;
+            padding: 1.2rem;
+            border-radius: 10px;
             border: 1px solid var(--border);
-            text-align: center;
+            text-align: left;
+            transition: transform 0.2s ease;
+        }
+
+        .spec-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
         }
 
         .spec-item .label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             color: #8b949e;
             display: block;
+            margin-bottom: 0.3rem;
         }
 
         .spec-item .value {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.2rem;
+            font-weight: 700;
             color: var(--success);
+            font-family: 'JetBrains Mono', monospace;
         }
 
         code, pre {
             font-family: 'JetBrains Mono', monospace;
             background-color: var(--code-bg);
-            border-radius: 6px;
+            border-radius: 8px;
         }
 
         code {
-            padding: 0.2rem 0.4rem;
-            color: var(--highlight);
+            padding: 0.2rem 0.5rem;
+            color: var(--accent);
+            background: rgba(255, 123, 114, 0.1);
         }
 
         pre {
-            padding: 1.5rem;
+            padding: 1.8rem;
             overflow-x: auto;
             border: 1px solid var(--border);
             position: relative;
+            font-size: 0.95rem;
+            margin: 1.5rem 0;
         }
 
         .step-num {
             background-color: var(--accent);
             color: white;
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             font-weight: bold;
-            margin-right: 0.5rem;
+            margin-right: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
         ul {
-            padding-left: 1.2rem;
+            padding-left: 1.5rem;
+            list-style: none;
         }
 
         li {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .tip, .warning {
+            border-left: 5px solid;
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
         }
 
         .tip {
-            border-left: 4px solid var(--success);
-            background: rgba(63, 185, 80, 0.1);
-            padding: 1rem;
-            border-radius: 0 8px 8px 0;
-            margin: 1rem 0;
+            border-color: var(--success);
+            background: rgba(63, 185, 80, 0.08);
         }
 
+        .warning {
+            border-color: var(--warning);
+            background: rgba(210, 153, 34, 0.08);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .badge-new { background: var(--success); color: var(--bg); }
+        .badge-pro { background: var(--highlight); color: var(--bg); }
+
         footer {
-            margin: 4rem 0;
+            margin: 5rem 0;
             color: #8b949e;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            text-align: center;
         }
 
         /* Responsive Fixes */
         @media (max-width: 600px) {
-            header h1 { font-size: 2rem; }
-            section { padding: 1rem; }
+            header h1 { font-size: 2.2rem; }
+            section { padding: 1.5rem; }
+            h2 { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Open Claw Deployment 🦞</h1>
-    <p>Hybrid WSL2 + Windows 11 Power Setup for Adeel</p>
+    <h1>Open Claw Master Guide 🦞</h1>
+    <p>Comprehensive Deployment & Optimization for Adeel</p>
 </header>
 
 <main>
 
-    <!-- SECTION 1: SYSTEM SPECIFICATION -->
+    <!-- SECTION 1: MASTER SPECIFICATIONS -->
     <section>
-        <h2>01. Target System Audit</h2>
-        <p>The following hardware configuration was verified on the master system. New deployment targets should match or exceed these specs for comparable performance.</p>
+        <span class="badge badge-pro">System Benchmark</span>
+        <h2>01. Master Hardware Baseline</h2>
+        <p>This setup leverages a high-end laptop workstation. Replicating this on lower-tier hardware may require switching from <strong>Local Inference</strong> to <strong>Cloud API</strong> models.</p>
         <div class="specs-grid">
             <div class="spec-item">
-                <span class="label">CPU</span>
+                <span class="label">CPU Architect</span>
                 <span class="value">i9-13980HX (24C/32T)</span>
             </div>
             <div class="spec-item">
-                <span class="label">GPU</span>
+                <span class="label">GPU Core</span>
                 <span class="value">RTX 4080 (12GB VRAM)</span>
             </div>
             <div class="spec-item">
-                <span class="label">Memory</span>
-                <span class="value">32GB DDR5</span>
+                <span class="label">System RAM</span>
+                <span class="value">32GB DDR5 @ 5600MT/s</span>
             </div>
             <div class="spec-item">
-                <span class="label">OS Host</span>
-                <span class="value">Windows 11 / WSL2</span>
+                <span class="label">Inference Engine</span>
+                <span class="value">Ollama + Transformers</span>
             </div>
-        </div>
-        <div class="tip">
-            <strong>Note on GPU:</strong> Ensure NVIDIA Driver 590+ is installed on the Windows host to support the latest CUDA kernels used by Step3-VL.
         </div>
     </section>
 
-    <!-- SECTION 2: PREREQUISITES -->
+    <!-- SECTION 2: UBUNTU LINUX PREP -->
     <section>
-        <h2>02. Windows 11 Host Setup</h2>
+        <span class="badge badge-new">Critical Linux Base</span>
+        <h2>02. Ubuntu OS Hardening & Prep</h2>
+        <p>OpenClaw requires specific C++ and Python headers to compile its native modules (like node-gyp for SQLite/WhatsApp).</p>
         <ul>
             <li>
-                <span class="step-num">1</span> <strong>Enable WSL2:</strong> Open PowerShell as Admin and run:
-                <pre>wsl --install -d Ubuntu-24.04</pre>
+                <span class="step-num">1</span> <strong>Update & Essential Build Tools:</strong>
+                <pre>sudo apt update && sudo apt upgrade -y
+sudo apt install -y build-essential python3-dev libpython3-dev \
+pkg-config libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev \
+librsvg2-dev ffmpeg git curl</pre>
             </li>
             <li>
-                <span class="step-num">2</span> <strong>PowerShell Execution Policy:</strong> Allow automation scripts:
-                <pre>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force</pre>
-            </li>
-            <li>
-                <span class="step-num">3</span> <strong>Install Chocolatey (Package Manager):</strong>
-                <pre>Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))</pre>
-            </li>
-            <li>
-                <span class="step-num">4</span> <strong>Essential Host Tools:</strong>
-                <pre>choco install git nodejs python ollama -y</pre>
+                <span class="step-num">2</span> <strong>Node.js Installation (LTS):</strong>
+                Always use <code>nvm</code> or <code>fnm</code> to manage Node versions. Avoid <code>sudo apt install nodejs</code>.
+                <pre>curl -fsSL https://fnm.vercel.app/install | bash
+fnm use --install-if-missing 22</pre>
             </li>
         </ul>
     </section>
 
-    <!-- SECTION 3: WSL2 AGENT SETUP -->
+    <!-- SECTION 3: OPENCLAW DEPLOYMENT -->
     <section>
-        <h2>03. WSL2 (Linux) Agent Setup</h2>
-        <p>Switch to your Ubuntu terminal for these commands.</p>
+        <h2>03. Core OpenClaw Installation</h2>
         <ul>
             <li>
-                <span class="step-num">1</span> <strong>Install OpenClaw Globally:</strong>
+                <span class="step-num">1</span> <strong>CLI Installation:</strong>
                 <pre>npm install -g openclaw</pre>
             </li>
             <li>
-                <span class="step-num">2</span> <strong>Initialize Workspace:</strong>
-                <pre>openclaw setup</pre>
-            </li>
-            <li>
-                <span class="step-num">3</span> <strong>The Local Model Serve Trick:</strong>
-                Create a virtual environment for the heavy vision models to avoid dependency conflicts.
-                <pre>python3 -m venv step3-venv
-source step3-venv/bin/activate
-pip install torch transformers fastapi uvicorn pillow</pre>
+                <span class="step-num">2</span> <strong>Gateway Auto-Start (systemd):</strong>
+                Create a service to ensure OpenClaw wakes up when the machine restarts.
+                <pre># Create file at /etc/systemd/system/openclaw.service
+[Unit]
+Description=OpenClaw Gateway Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/.openclaw/workspace
+ExecStart=/usr/local/bin/openclaw gateway
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target</pre>
+                <div class="tip">Enable with: <code>sudo systemctl enable --now openclaw</code></div>
             </li>
         </ul>
     </section>
 
-    <!-- SECTION 4: THE HYBRID MODEL BRIDGE -->
+    <!-- SECTION 4: ADVANCED OPTIMIZATION -->
     <section>
-        <h2>04. Local Model Service (serve_step3.py)</h2>
-        <p>This script bridges the Windows-mounted <code>D:</code> drive models to an OpenAI-compatible API that OpenClaw can use.</p>
-        <pre>
-# Save as serve_step3.py in home directory
-import torch
-from transformers import AutoProcessor, AutoModelForCausalLM
-from fastapi import FastAPI, Request
-
-app = FastAPI()
-model_path = "/root/Step3-VL-10B-model" # Path to your D: drive mount
-
-# Load model to CPU (fp16) or GPU if VRAM allows
-model = AutoModelForCausalLM.from_pretrained(
-    model_path,
-    trust_remote_code=True,
-    torch_dtype=torch.float16,
-    device_map="auto"
-).eval()
-
-@app.post("/v1/chat/completions")
-async def chat(request: Request):
-    # Standard OpenAI API logic here...
-    pass
-        </pre>
-        <div class="tip">
-            <strong>Execution:</strong> Run in the background using <code>nohup python serve_step3.py &</code>
+        <span class="badge badge-pro">Performance Tuning</span>
+        <h2>04. Efficient "Brain" Routing</h2>
+        <p>To keep costs zero and performance high, we use **ClawRouter** logic to prioritize local models over paid APIs.</p>
+        
+        <div class="warning">
+            <strong>Context Window Rule:</strong> Always ensure your primary conversation model has at least <strong>16,000 tokens</strong>. Local models like Step3-VL-10B (4k window) should only be used as <strong>Sub-Agents</strong> for vision/reasoning.
         </div>
+
+        <h3>Preferred Routing Matrix:</h3>
+        <ul>
+            <li><strong>Daily Talk:</strong> <code>ollama/deepseek-v3.1:671b-cloud</code> (Infinite window/Free)</li>
+            <li><strong>Vision/Images:</strong> <code>step3-local/Step3-VL-10B</code> (Running on your RTX 4080)</li>
+            <li><strong>Complex Code:</strong> <code>anthropic/claude-3.5-sonnet</code> (Fallback only)</li>
+        </ul>
     </section>
 
-    <!-- SECTION 5: CHANNEL CONFIGURATION -->
+    <!-- SECTION 5: THE HYBRID DRIVE BRIDGE -->
     <section>
-        <h2>05. WhatsApp & Brain Config</h2>
-        <p>Modify <code>~/.openclaw/openclaw.json</code> to link your phone and set the primary "Brain" (DeepSeek).</p>
+        <h2>05. Mastering the D: Drive Mount</h2>
+        <p>For WSL2 setups, your Windows LLM inventory is accessible via <code>/mnt/d/</code>. The model loader must be configured to use these absolute paths.</p>
         <pre>
-{
-  "agents": {
-    "defaults": {
-      "model": {
-        "primary": "ollama/deepseek-v3.1:671b-cloud"
-      }
-    }
-  },
-  "channels": {
-    "whatsapp": { "enabled": true }
+# In your openclaw.json:
+"models": {
+  "step3-local/Step3-VL-10B": {
+    "localPath": "/mnt/d/Google antigravity/ai-stack-2026/Step3-VL-10B-AWQ",
+    "device": "cuda"
   }
 }
         </pre>
-        <p><strong>To Link WhatsApp:</strong> Run <code>openclaw channels login</code> and scan the generated QR code.</p>
     </section>
 
-    <!-- SECTION 6: TROUBLESHOOTING -->
+    <!-- SECTION 6: THE MEMORY PROTOCOL -->
     <section>
-        <h2>06. Critical Fixes (The "Adeel Protocol")</h2>
+        <h2>06. Persistent Memory (memU)</h2>
+        <p>To ensure Open Claw "remembers" your Win11 environment across restarts:</p>
         <ul>
-            <li><strong>Context Window Error:</strong> If you see "Something went wrong", it is likely a model window mismatch. DeepSeek via Ollama is the preferred "Brain" for long conversations.</li>
-            <li><strong>Port Conflicts:</strong> If the gateway won't start, run <code>openclaw gateway --force</code> to kill stale processes on port 18789.</li>
-            <li><strong>WSL2 IP Changes:</strong> If the agent can't see the Windows host, use <code>$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}')</code> to find the host IP.</li>
+            <li>Maintain <strong>SOUL.md</strong> for behavioral rules.</li>
+            <li>Use <strong>USER.md</strong> for personal context (Adeel, RTX 4080, D: drive structure).</li>
+            <li>Periodically run <code>openclaw memory reindex</code> to keep the vector store fresh.</li>
         </ul>
     </section>
 
 </main>
 
 <footer>
-    Open Claw v2026.4.2 | Generated for Adeel | 🦞 "Trust the process, verify the output."
+    Open Claw v2026.4.2 Master Documentation | Author: Open Claw | User: Adeel | 🦞 <br>
+    "One Agent. Many Worlds. No Limits."
 </footer>
 
 </body>
