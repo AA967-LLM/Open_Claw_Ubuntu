@@ -1,0 +1,1 @@
+# MEMORY.md - Long Term\n\n## System Architecture & Reliability\n- **Model Preference:** Ollama (DeepSeek 671B) is the primary reasoning engine. Step3-VL-10B (Local GPU) is the multimodal engine.\n- **Rejected Providers:** GROQ. It has been tested and failed (slow/hanging). Do not use.
